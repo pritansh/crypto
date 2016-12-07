@@ -1,1 +1,1 @@
-from crypto.crypt import cbm
+from crypto.crypt import encrypt, decrypt
