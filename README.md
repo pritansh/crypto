@@ -32,7 +32,7 @@ print(key)
 
 [2, 4, 2]
 
-e = crpalg.ChaoticBakerMapEncrypt(l, key)
+e = crpalg.ChaoticBakerMap.encrypt(l, key)
 print(e)
 
 ([2, 4, 2], array([[31, 23, 15,  7, 32, 24, 16,  8],
@@ -44,7 +44,7 @@ print(e)
        [25, 17,  9,  1, 26, 18, 10,  2],
        [57, 49, 41, 33, 58, 50, 42, 34]]))
 
-d = crpalg.ChaoticBakerMapDecrypt(e[1], e[0])
+d = crpalg.ChaoticBakerMap.decrypt(e[1], e[0])
 print(d)
 
 ([2, 4, 2], array([[ 1,  2,  3,  4,  5,  6,  7,  8],
@@ -55,4 +55,42 @@ print(d)
        [41, 42, 43, 44, 45, 46, 47, 48],
        [49, 50, 51, 52, 53, 54, 55, 56],
        [57, 58, 59, 60, 61, 62, 63, 64]]))
+```
+
+## Helper
+
+### Point
+
+```python
+import crypto.helper as crphlp
+
+p1 = crphlp.Point.toPoint(2)
+print(p1)
+
+(-1.44225,2.0)
+
+p2 = crphlp.Point.toPoint(7)
+print(p2)
+
+(3.476027,7.0)
+
+padd = p1 + p2
+print(padd)
+
+(-1.000268,-2.449325)
+
+psub = p1 - p2
+print(psub)
+
+(1.314791,3.045135)
+
+pdbl = p1 * 2
+print(pdbl)
+
+(5.318295,-12.546875)
+
+pmul = p1 * 8
+print(pmul)
+
+(-1.473748,1.949132)
 ```
