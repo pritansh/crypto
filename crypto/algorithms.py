@@ -12,6 +12,7 @@ def ChaoticBakerMapEncrypt(data, key):
     return enc
 
 def ChaoticBakerMapDecrypt(data, key):
+    key = key[::-1]
     dec = np.vsplit(data, np.cumsum(key))
     arr = []
     for i in range(len(key)-1, -1, -1):
