@@ -6,91 +6,171 @@
 import crypto as crp
 ``` 
 
+## Test
+
+    python test.py
+
+
 ## Algorithms
 
 ### Chaotic Baker Map
 
 ```python
-import math, random, crypto.algorithms as crpalg, numpy as np
+import math, random
+from crypto.algorithms import ChaoticBakerMap
+from crypto.helper import Image
 
-l = np.array([e for e in range(1, 65)]).reshape(8, 8)
-print(l)
+#Reads image pixel data
+arr = Image.read('new-image.jpg')
+print(arr)
 
-array([[ 1,  2,  3,  4,  5,  6,  7,  8],
-       [ 9, 10, 11, 12, 13, 14, 15, 16],
-       [17, 18, 19, 20, 21, 22, 23, 24],
-       [25, 26, 27, 28, 29, 30, 31, 32],
-       [33, 34, 35, 36, 37, 38, 39, 40],
-       [41, 42, 43, 44, 45, 46, 47, 48],
-       [49, 50, 51, 52, 53, 54, 55, 56],
-       [57, 58, 59, 60, 61, 62, 63, 64]])
+array([[137, 135, 133, ..., 145, 147, 114],
+       [137, 137, 133, ..., 144, 148, 114],
+       [138, 133, 134, ..., 133, 125,  87],
+       ...,
+       [ 28,  29,  28, ...,  53,  61,  59],
+       [ 20,  24,  25, ...,  64,  70,  65],
+       [ 22,  30,  25, ...,  71,  67,  72]], dtype=uint8)
 
-key = [2**e for e in range(1, int(math.log(len(l), 2)))]
+#Generate key
+key = [2**e for e in range(1, int(math.log(len(arr), 2)))]
 key = key[::-1] + [2]
 random.shuffle(key)
 print(key)
 
-[2, 4, 2]
+[128, 2, 4, 2, 64, 32, 8, 16]
 
-e = crpalg.ChaoticBakerMap.encrypt(l, key)
-print(e)
+#Encrypt data using Chaotic Baker Map
+enc = ChaoticBakerMap.encrypt(arr, key)
+print(enc)
 
-([2, 4, 2], array([[31, 23, 15,  7, 32, 24, 16,  8],
-       [63, 55, 47, 39, 64, 56, 48, 40],
-       [11,  3, 12,  4, 13,  5, 14,  6],
-       [27, 19, 28, 20, 29, 21, 30, 22],
-       [43, 35, 44, 36, 45, 37, 46, 38],
-       [59, 51, 60, 52, 61, 53, 62, 54],
-       [25, 17,  9,  1, 26, 18, 10,  2],
-       [57, 49, 41, 33, 58, 50, 42, 34]]))
+array([[ 60,  90, 105, ...,  87, 114, 114],
+       [ 27,  28,  28, ...,  19,  21,  32],
+       [ 30,  24,  24, ...,   6,   7,  16],
+       ...,
+       [ 25,  25,  34, ..., 102, 100, 105],
+       [ 28,  24,  29, ...,  98, 102, 102],
+       [ 22,  20,  30, ...,  93,  99,  99]], dtype=uint8)
 
-d = crpalg.ChaoticBakerMap.decrypt(e[1], e[0])
-print(d)
+#Decrypt using Chaotic Baker Map
+dec = ChaoticBakerMap.decrypt(enc, key)
+print(dec)
 
-([2, 4, 2], array([[ 1,  2,  3,  4,  5,  6,  7,  8],
-       [ 9, 10, 11, 12, 13, 14, 15, 16],
-       [17, 18, 19, 20, 21, 22, 23, 24],
-       [25, 26, 27, 28, 29, 30, 31, 32],
-       [33, 34, 35, 36, 37, 38, 39, 40],
-       [41, 42, 43, 44, 45, 46, 47, 48],
-       [49, 50, 51, 52, 53, 54, 55, 56],
-       [57, 58, 59, 60, 61, 62, 63, 64]]))
+array([[137, 135, 133, ..., 145, 147, 114],
+       [137, 137, 133, ..., 144, 148, 114],
+       [138, 133, 134, ..., 133, 125,  87],
+       ...,
+       [ 28,  29,  28, ...,  53,  61,  59],
+       [ 20,  24,  25, ...,  64,  70,  65],
+       [ 22,  30,  25, ...,  71,  67,  72]], dtype=uint8)
 ```
 
-## Helper
-
-### Point
+### Elliptic Curve Cryptography
 
 ```python
-import crypto.helper as crphlp
+from crypto.algorithms import EllipticCurve
+from crypto.helper import Image
 
-p1 = crphlp.Point.toPoint(2)
-print(p1)
+#Reads image pixel data
+arr = Image.read('new-image.jpg')
+print(arr)
 
-(-1.44225,2.0)
+array([[137, 135, 133, ..., 145, 147, 114],
+       [137, 137, 133, ..., 144, 148, 114],
+       [138, 133, 134, ..., 133, 125,  87],
+       ...,
+       [ 28,  29,  28, ...,  53,  61,  59],
+       [ 20,  24,  25, ...,  64,  70,  65],
+       [ 22,  30,  25, ...,  71,  67,  72]], dtype=uint8)
 
-p2 = crphlp.Point.toPoint(7)
-print(p2)
+#Encrypt data using Elliptic Curve Cryptography
+enc = EllipticCurve.encrypt(arr)
+print(enc)
 
-(3.476027,7.0)
+array([[7L, 230L, 36L, ..., 221L, 40L, 169L],
+       [253L, 161L, 86L, ..., 80L, 68L, 175L],
+       [248L, 72L, 111L, ..., 242L, 6L, 173L],
+       ...,
+       [10L, 211L, 103L, ..., 223L, 101L, 92L],
+       [53L, 246L, 88L, ..., 242L, 166L, 152L],
+       [70L, 83L, 219L, ..., 116L, 198L, 63L]], dtype=object)
+```
 
-padd = p1 + p2
-print(padd)
+### Double Phase Random Encryption (DPRE)
 
-(-1.000268,-2.449325)
+```python
+from crypto.algorithms import DPRE
+from crypto.helper import Image
 
-psub = p1 - p2
-print(psub)
+#Reads image pixel data
+arr = Image.read('new-image.jpg')
+print(arr)
 
-(1.314791,3.045135)
+array([[137, 135, 133, ..., 145, 147, 114],
+       [137, 137, 133, ..., 144, 148, 114],
+       [138, 133, 134, ..., 133, 125,  87],
+       ...,
+       [ 28,  29,  28, ...,  53,  61,  59],
+       [ 20,  24,  25, ...,  64,  70,  65],
+       [ 22,  30,  25, ...,  71,  67,  72]], dtype=uint8)
 
-pdbl = p1 * 2
-print(pdbl)
+#Encrypt data using DPRE
+enc = DPRE.encrypt(arr)
+print(enc)
 
-(5.318295,-12.546875)
+array([[ 39184.79236544,  31558.21415737,  10254.31990452, ...,
+         24183.83751755,  28532.98564661,  12211.39153403],
+       [ 17431.01848867,  25974.26246758,  11413.47217687, ...,
+         31950.20943769,   6424.28396344,  11303.68433828],
+       [ 16675.71377409,  20608.41715477,  20999.77408024, ...,
+         32157.42918628,   7109.34499225,  28436.10538492],
+       ...,
+       [ 27190.09935674,  12959.63110726,  19204.22515069, ...,
+         26776.17019205,  20199.51902081,  11545.19270325],
+       [ 30221.31521539,  16714.42468642,  15754.56026733, ...,
+         18674.96264633,  23839.93259786,  34145.27576264],
+       [ 21330.89385981,  18660.61295716,  36930.08247056, ...,
+         32991.09714542,  32817.97151161,  14057.67015299]])
+```
 
-pmul = p1 * 8
-print(pmul)
+## Helper 
 
-(-1.473748,1.949132)
+### Base
+
+```python
+import numpy as np
+from crypto.helper import Base
+
+#Convert list of base 2 to integer
+dec = Base.toBase(np.array([1, 0, 1, 1]), 2)
+print(dec)
+
+11
+
+#Convert integer to list of base 2
+bin = Base.fromBase(dec, 2)
+print(bin)
+
+array([1, 0, 1, 1], dtype=object)
+```
+
+### Image
+
+```python
+from crypto.helper import Image
+
+#Reads image pixel data
+arr = Image.read('new-image.jpg')
+print(arr)
+
+array([[137, 135, 133, ..., 145, 147, 114],
+       [137, 137, 133, ..., 144, 148, 114],
+       [138, 133, 134, ..., 133, 125,  87],
+       ...,
+       [ 28,  29,  28, ...,  53,  61,  59],
+       [ 20,  24,  25, ...,  64,  70,  65],
+       [ 22,  30,  25, ...,  71,  67,  72]], dtype=uint8)
+
+#Saves image pixel data
+Image.save('new-image.jpg', arr)
 ```

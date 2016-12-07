@@ -1,11 +1,7 @@
 import crypto as crp
-import numpy as np
+from crypto.helper import Image
 
-l = np.array([e for e in range(1, 65)]).reshape(8, 8)
-print(l)
+arr = Image.read('new-image.jpg')
+print(arr)
 
-e = crp.encrypt(l)
-print(e)
-
-d = crp.decrypt(e[1], e[0])
-print(d)
+crp.encrypt(arr)
